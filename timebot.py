@@ -1,9 +1,15 @@
 import discord
-import yaml
+
 import pytz
 import datetime
+import os
+from dotenv import load_dotenv
 
 client = discord.Client()
+
+# "process.env" accesses the environment variables for the running node process. PREFIX is the environment variable you defined in your .env file
+load_dotenv()
+TOKEN = os.getenv('TOKEN')
 
 @client.event
 async def on_message(message):
@@ -14,9 +20,5 @@ async def on_message(message):
         formatTime = '%I:%M:%S %p %Z'
         current_time = datetime.datetime.now(tz=pytz.timezone('Asia/Tokyo'))
         await message.channel.send("It is now " + current_time.strftime(formatTime) + " for <@160422671404761088>.")
-
-# Reads the secrets file
-with open("config/secrets.yaml", 'r') as stream:
-    secretToken = yaml.safe_load(stream)
-
-client.run(secretToken)
+        
+client.run(TOKEN)
